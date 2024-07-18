@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { nanoid } from 'nanoid';
 import ContactForm from './components/ContactForm';
 import SearchBox from './components/SearchBox';
@@ -16,6 +16,17 @@ const App = () => {
   const [contacts, setContacts] = useState(initialContacts);
 
   const [searchQuery, setSearchQuery] = useState('');
+
+  useEffect(() => {
+    const savedContacts = localStorage.getItem('contacts');
+    if (savedContacts) {
+      setContacts(JSON.parse(savedContacts));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
